@@ -110,6 +110,27 @@
     .mobile-menu a:hover { color: var(--green); }
     .mobile-menu.open { display: flex; }
 
+    /* ── CSS LOGO ── */
+    .css-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; flex-shrink: 0;
+    }
+    .logo-icon { font-size: 30px; line-height: 1; }
+    .logo-text { display: flex; flex-direction: column; gap: 1px; }
+    .logo-name {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 700;
+      font-size: 24px; line-height: 1; color: var(--charcoal); letter-spacing: -0.01em;
+    }
+    .logo-top { color: var(--green); }
+    .logo-address {
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 9px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);
+    }
+    .css-logo-footer .logo-name { font-size: 20px; color: rgba(250,246,239,0.9); }
+    .css-logo-footer .logo-top { color: var(--green-light); }
+    .css-logo-footer .logo-address { color: rgba(250,246,239,0.35); }
+    .css-logo-footer .logo-icon { font-size: 24px; }
+
     @media (max-width: 768px) {
       #navbar { padding: 0 20px; }
       .nav-links { display: none; }
@@ -573,8 +594,12 @@
 <!-- ━━━ NAVBAR ━━━ -->
 <nav id="navbar">
   <div class="nav-inner">
-    <a href="#" class="nav-logo">
-      <img src="images/logo.png" alt="Falafel Top" style="max-height:50px;object-fit:contain;">
+    <a href="#" class="css-logo">
+      <span class="logo-icon">🧆</span>
+      <span class="logo-text">
+        <span class="logo-name"><span class="logo-falafel">Falafel</span> <span class="logo-top">Top</span></span>
+        <span class="logo-address">Diestsestraat 159 · Leuven</span>
+      </span>
     </a>
     <ul class="nav-links">
       <li><a href="#menu" data-lang="nav_menu">Menu</a></li>
@@ -956,8 +981,13 @@
 <footer id="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="images/logo.png" alt="Falafel Top" style="max-height:40px;object-fit:contain;">
-      <div class="footer-brand-text" data-lang="footer_tagline">Authentieke Syrische falafel · Leuven</div>
+      <a href="#" class="css-logo css-logo-footer">
+        <span class="logo-icon">🧆</span>
+        <span class="logo-text">
+          <span class="logo-name"><span class="logo-falafel">Falafel</span> <span class="logo-top">Top</span></span>
+          <span class="logo-address">Diestsestraat 159 · Leuven</span>
+        </span>
+      </a>
     </div>
     <div class="footer-copy">© 2026 · Diestsestraat 159 · 3000 Leuven</div>
     <div class="footer-links">
