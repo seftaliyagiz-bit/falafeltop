@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Falafel Top — Authentieke Syrische Falafel · Leuven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    :root {
+      --green: #357960;
+      --green-dark: #1e3d2f;
+      --green-light: #4a9478;
+      --cream: #faf6ef;
+      --cream-dark: #f0e9dc;
+      --terracotta: #c4622a;
+      --terracotta-light: #d4753d;
+      --charcoal: #1e1e1e;
+      --white: #ffffff;
+      --text-muted: #6b6b6b;
+      --border: rgba(53,121,96,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(--charcoal); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseGlow {
+      0%,100% { opacity: 0.7; }
+      50%      { opacity: 1; }
+    }
+    @keyframes grainMove {
+      0%   { transform: translate(0,0); }
+      25%  { transform: translate(-2px,2px); }
+      50%  { transform: translate(2px,-1px); }
+      75%  { transform: translate(-1px,-2px); }
+      100% { transform: translate(0,0); }
+    }
+
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── NAVBAR ── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: var(--cream);
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      padding: 0 40px;
+    }
+    #navbar.scrolled {
+      border-color: var(--green);
+      box-shadow: 0 2px 20px rgba(53,121,96,0.12);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      height: 68px; display: flex; align-items: center; justify-content: space-between;
+      gap: 24px;
+    }
+    .nav-logo img { max-height: 50px; object-fit: contain; display: block; }
+    .nav-links {
+      display: flex; align-items: center; gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 14px;
+      letter-spacing: 0.04em; color: var(--charcoal); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-cta {
+      background: var(--green); color: var(--white);
+      padding: 10px 22px; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px;
+      letter-spacing: 0.06em; text-decoration: none; transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: var(--green-light); transform: translateY(-1px); }
+    .lang-toggle { display: flex; gap: 4px; align-items: center; }
+    .lang-btn {
+      background: transparent; border: 1.5px solid var(--border);
+      color: var(--text-muted); padding: 5px 10px; border-radius: 6px;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 12px;
+      letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s;
+    }
+    .lang-btn.active {
+      background: var(--green); color: var(--white); border-color: var(--green);
+    }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span { width: 24px; height: 2px; background: var(--charcoal); display: block; transition: all 0.25s; }
+    .mobile-menu {
+      display: none; flex-direction: column; gap: 0;
+      background: var(--cream); border-top: 1px solid var(--border);
+      padding: 8px 0 16px;
+    }
+    .mobile-menu a {
+      padding: 14px 40px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 15px;
+      color: var(--charcoal); text-decoration: none; border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--green); }
+    .mobile-menu.open { display: flex; }
+
+    @media (max-width: 768px) {
+      #navbar { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-cta { display: none; }
+    }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; width: 100%; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      background-image: url('images/hero.png');
+      background-size: cover; background-position: center;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: rgba(30,61,47,0.60);
+      z-index: 1;
+    }
+    .hero-grain {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: 0.04; mix-blend-mode: overlay;
+      animation: grainMove 0.15s steps(1) infinite;
+    }
+    .hero-content {
+      position: relative; z-index: 3;
+      text-align: center; padding: 100px 24px 60px;
+      max-width: 780px; margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(250,246,239,0.12); border: 1px solid rgba(250,246,239,0.25);
+      backdrop-filter: blur(8px); border-radius: 99px;
+      padding: 8px 20px; margin-bottom: 32px;
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 13px;
+      color: rgba(250,246,239,0.9); letter-spacing: 0.04em;
+      animation: fadeUp 0.8s ease 0.1s both;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 700; font-style: normal;
+      font-size: clamp(64px,12vw,128px); line-height: 0.9; letter-spacing: -0.02em;
+      color: var(--cream); margin-bottom: 20px;
+      animation: fadeUp 0.8s ease 0.25s both;
+    }
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400;
+      font-size: clamp(20px,3vw,28px); color: rgba(250,246,239,0.82);
+      margin-bottom: 32px; line-height: 1.4;
+      animation: fadeUp 0.8s ease 0.4s both;
+    }
+    .hero-icons {
+      display: flex; align-items: center; justify-content: center; gap: 24px;
+      flex-wrap: wrap; margin-bottom: 40px;
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 14px;
+      color: rgba(250,246,239,0.75);
+      animation: fadeUp 0.8s ease 0.5s both;
+    }
+    .hero-icons span { display: flex; align-items: center; gap: 6px; }
+    .hero-btns {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 36px;
+      animation: fadeUp 0.8s ease 0.6s both;
+    }
+    .btn-primary {
+      background: var(--green); color: var(--white);
+      padding: 16px 36px; border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px;
+      letter-spacing: 0.05em; text-decoration: none; border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 24px rgba(53,121,96,0.35);
+    }
+    .btn-primary:hover { background: var(--green-light); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(53,121,96,0.45); }
+    .btn-outline {
+      background: transparent; color: var(--cream);
+      padding: 15px 36px; border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px;
+      letter-spacing: 0.05em; text-decoration: none; cursor: pointer;
+      border: 2px solid rgba(250,246,239,0.55);
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .btn-outline:hover { background: rgba(250,246,239,0.1); border-color: var(--cream); transform: translateY(-2px); }
+    .hero-open {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 13px;
+      letter-spacing: 0.08em; color: rgba(250,246,239,0.65);
+      animation: fadeUp 0.8s ease 0.7s both;
+    }
+    .pulse-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #5cde8a;
+      box-shadow: 0 0 8px #5cde8a;
+      animation: pulseGlow 2s ease-in-out infinite; flex-shrink: 0;
+    }
+    .scroll-cue {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      opacity: 0.4; animation: pulseGlow 2.5s ease-in-out infinite;
+    }
+    .scroll-cue span { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); font-family: 'DM Sans', sans-serif; }
+
+    /* ── SIGNATURE STRIP ── */
+    #strip {
+      background: var(--cream-dark);
+      padding: 56px 40px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .strip-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+    }
+    .strip-card {
+      text-align: center; padding: 32px 20px;
+      background: var(--white); border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 16px rgba(53,121,96,0.06);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .strip-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(53,121,96,0.12); }
+    .strip-icon { font-size: 32px; margin-bottom: 14px; }
+    .strip-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 20px;
+      color: var(--green-dark); margin-bottom: 8px;
+    }
+    .strip-body {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 14px;
+      color: var(--text-muted); line-height: 1.6;
+    }
+    @media (max-width: 768px) {
+      #strip { padding: 48px 20px; }
+      .strip-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    }
+    @media (max-width: 480px) {
+      .strip-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── MENU ── */
+    #menu {
+      background: var(--green);
+      padding: 100px 40px;
+    }
+    .menu-inner { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    }
+    .section-label::before, .section-label::after {
+      content: ''; flex: 0 0 28px; height: 1px;
+    }
+    .section-label-text {
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 11px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 700;
+      font-size: clamp(40px,6vw,72px); line-height: 1; letter-spacing: -0.02em;
+      margin-bottom: 56px;
+    }
+    .menu-label::before, .menu-label::after { background: rgba(250,246,239,0.3); }
+    .menu-label .section-label-text { color: rgba(250,246,239,0.65); }
+    .menu-title { color: var(--cream); }
+
+    .menu-cols {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+    }
+    .menu-col-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 600; font-style: italic;
+      font-size: 22px; color: rgba(250,246,239,0.65); margin-bottom: 24px;
+      padding-bottom: 12px; border-bottom: 1px solid rgba(250,246,239,0.15);
+    }
+    .menu-item {
+      padding: 20px 0; border-bottom: 1px solid rgba(250,246,239,0.1);
+    }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item-header {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+      margin-bottom: 6px;
+    }
+    .menu-item-name {
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px;
+      color: var(--cream); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .bestseller-badge {
+      background: var(--terracotta); color: var(--white);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      padding: 2px 8px; border-radius: 99px; text-transform: uppercase;
+    }
+    .menu-price {
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 16px;
+      color: #a8d5bc; white-space: nowrap; flex-shrink: 0;
+    }
+    .menu-desc {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 13px;
+      color: rgba(250,246,239,0.55); line-height: 1.6;
+    }
+    .menu-cta-wrap { text-align: center; margin-top: 56px; }
+    @media (max-width: 768px) {
+      #menu { padding: 72px 20px; }
+      .menu-cols { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--white);
+      padding: 100px 40px;
+    }
+    .about-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
+    }
+    .about-img img {
+      width: 100%; border-radius: 14px;
+      border: 3px solid var(--green);
+      display: block;
+      box-shadow: 0 12px 48px rgba(53,121,96,0.18);
+    }
+    .about-label::before, .about-label::after { background: rgba(53,121,96,0.3); }
+    .about-label .section-label-text { color: var(--green); }
+    .about-title { color: var(--green-dark); margin-bottom: 12px; }
+    .about-italic {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400;
+      font-size: 20px; color: var(--terracotta); margin-bottom: 24px; line-height: 1.4;
+    }
+    .about-body {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 16px;
+      line-height: 1.85; color: #444; margin-bottom: 36px;
+    }
+    .about-stats {
+      display: flex; gap: 32px; flex-wrap: wrap;
+    }
+    .about-stat {
+      text-align: center;
+    }
+    .about-stat-val {
+      font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px;
+      color: var(--green); display: block; margin-bottom: 4px;
+    }
+    .about-stat-label {
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 12px;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+    }
+    @media (max-width: 768px) {
+      #about { padding: 72px 20px; }
+      .about-inner { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    /* ── GALLERY ── */
+    #gallery {
+      background: var(--green-dark);
+      padding: 100px 40px;
+    }
+    .gallery-inner { max-width: 1200px; margin: 0 auto; }
+    .gallery-label::before, .gallery-label::after { background: rgba(250,246,239,0.25); }
+    .gallery-label .section-label-text { color: rgba(250,246,239,0.55); }
+    .gallery-title { color: var(--cream); margin-bottom: 48px; }
+    .gallery-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .gallery-item {
+      border-radius: 14px; overflow: hidden;
+      aspect-ratio: 4/3;
+      position: relative; cursor: pointer;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.45s ease;
+      display: block;
+    }
+    .gallery-item:hover img { transform: scale(1.06); }
+    @media (max-width: 480px) {
+      #gallery { padding: 72px 20px; }
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── CATERING ── */
+    #catering {
+      background: var(--terracotta);
+      padding: 100px 40px; text-align: center;
+    }
+    .catering-inner { max-width: 760px; margin: 0 auto; }
+    .catering-label::before, .catering-label::after { background: rgba(255,255,255,0.3); }
+    .catering-label .section-label-text { color: rgba(255,255,255,0.7); }
+    .catering-label { justify-content: center; }
+    .catering-title { color: var(--white); margin-bottom: 24px; }
+    .catering-body {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 17px;
+      line-height: 1.8; color: rgba(255,255,255,0.85); margin-bottom: 40px;
+      max-width: 600px; margin-left: auto; margin-right: auto;
+    }
+    .btn-white {
+      background: var(--white); color: var(--terracotta);
+      padding: 16px 40px; border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 14px;
+      letter-spacing: 0.08em; text-decoration: none; display: inline-block;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,0,0,0.2); }
+    @media (max-width: 768px) { #catering { padding: 72px 20px; } }
+
+    /* ── REVIEWS ── */
+    #reviews {
+      background: var(--cream);
+      padding: 100px 40px;
+    }
+    .reviews-inner { max-width: 1200px; margin: 0 auto; }
+    .reviews-label::before, .reviews-label::after { background: rgba(53,121,96,0.25); }
+    .reviews-label .section-label-text { color: var(--green); }
+    .reviews-title { color: var(--green-dark); margin-bottom: 56px; }
+    .reviews-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 40px;
+    }
+    .review-card {
+      background: var(--white); border-radius: 14px;
+      padding: 32px 28px; border: 1px solid var(--border);
+      box-shadow: 0 2px 16px rgba(53,121,96,0.06);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .review-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(53,121,96,0.12); }
+    .review-stars { color: var(--green); font-size: 16px; margin-bottom: 16px; letter-spacing: 2px; }
+    .review-text {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400;
+      font-size: 17px; line-height: 1.7; color: var(--charcoal); margin-bottom: 20px;
+    }
+    .review-source {
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 12px;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+    }
+    .reviews-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .reviews-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 13px;
+      color: var(--green); text-decoration: none;
+      border: 1.5px solid var(--border); padding: 10px 20px; border-radius: 8px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .reviews-link:hover { background: rgba(53,121,96,0.07); border-color: var(--green); }
+    @media (max-width: 768px) {
+      #reviews { padding: 72px 20px; }
+      .reviews-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--green-dark);
+      padding: 100px 40px;
+    }
+    .contact-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start;
+    }
+    .contact-label::before, .contact-label::after { background: rgba(250,246,239,0.2); }
+    .contact-label .section-label-text { color: rgba(250,246,239,0.5); }
+    .contact-title { color: var(--cream); margin-bottom: 36px; }
+    .contact-info { display: flex; flex-direction: column; gap: 20px; margin-bottom: 32px; }
+    .contact-row {
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .contact-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(250,246,239,0.08); border: 1px solid rgba(250,246,239,0.12);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      color: var(--green-light); font-size: 14px;
+    }
+    .contact-val {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 15px;
+      color: rgba(250,246,239,0.8); line-height: 1.5;
+    }
+    .contact-val a { color: rgba(250,246,239,0.8); text-decoration: none; }
+    .contact-val a:hover { color: var(--green-light); }
+    .contact-tagline {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 14px;
+      color: rgba(250,246,239,0.5); letter-spacing: 0.04em;
+      padding-top: 16px; border-top: 1px solid rgba(250,246,239,0.08);
+    }
+    .map-wrap {
+      margin-top: 28px; border-radius: 12px; overflow: hidden;
+      border: 1px solid rgba(250,246,239,0.12);
+    }
+    .map-wrap iframe { display: block; }
+    .form-title {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400;
+      font-size: 26px; color: rgba(250,246,239,0.85); margin-bottom: 28px;
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-label {
+      display: block; font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 11px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(250,246,239,0.45); margin-bottom: 7px;
+    }
+    .form-input, .form-textarea {
+      width: 100%; background: rgba(250,246,239,0.05);
+      border: 1px solid rgba(250,246,239,0.15);
+      border-radius: 8px; padding: 13px 16px;
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 15px;
+      color: rgba(250,246,239,0.85); outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: var(--green-light); }
+    .form-textarea { resize: vertical; min-height: 120px; }
+    .form-submit {
+      margin-top: 8px; padding: 14px 32px;
+      background: var(--green); color: var(--white);
+      border: none; border-radius: 8px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px;
+      letter-spacing: 0.08em; transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 4px 16px rgba(53,121,96,0.3);
+    }
+    .form-submit:hover { background: var(--green-light); transform: translateY(-1px); }
+    .form-success {
+      display: none; padding: 24px;
+      background: rgba(53,121,96,0.15); border: 1px solid rgba(53,121,96,0.3);
+      border-radius: 10px; text-align: center;
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px;
+      color: var(--green-light);
+    }
+    @media (max-width: 768px) {
+      #contact { padding: 72px 20px; }
+      .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    /* ── FOOTER ── */
+    #footer {
+      background: var(--green-dark);
+      border-top: 1px solid rgba(250,246,239,0.08);
+      padding: 40px 40px 32px;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; flex-wrap: wrap;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 14px; }
+    .footer-brand img { max-height: 40px; object-fit: contain; }
+    .footer-brand-text {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 13px;
+      color: rgba(250,246,239,0.5);
+    }
+    .footer-copy {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 12px;
+      letter-spacing: 0.06em; color: rgba(250,246,239,0.35); text-align: center;
+    }
+    .footer-links { display: flex; gap: 20px; align-items: center; }
+    .footer-links a {
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px;
+      color: var(--green-light); text-decoration: none; letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--cream); }
+    @media (max-width: 768px) {
+      #footer { padding: 32px 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .footer-copy { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ━━━ NAVBAR ━━━ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="images/logo.png" alt="Falafel Top" style="max-height:50px;object-fit:contain;">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#menu" data-lang="nav_menu">Menu</a></li>
+      <li><a href="#about" data-lang="nav_about">Over ons</a></li>
+      <li><a href="#catering" data-lang="nav_catering">Catering</a></li>
+      <li><a href="#contact" data-lang="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('nl')">NL</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+      </div>
+      <a href="https://www.falafeltopleuven.be" target="_blank" rel="noopener" class="nav-cta" data-lang="nav_cta">Bestel nu</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#menu" data-lang="nav_menu" onclick="closeMobile()">Menu</a>
+    <a href="#about" data-lang="nav_about" onclick="closeMobile()">Over ons</a>
+    <a href="#catering" data-lang="nav_catering" onclick="closeMobile()">Catering</a>
+    <a href="#contact" data-lang="nav_contact" onclick="closeMobile()">Contact</a>
+    <a href="https://www.falafeltopleuven.be" target="_blank" rel="noopener" data-lang="nav_cta" style="color:var(--green);font-weight:600;">Bestel nu</a>
+  </div>
+</nav>
+
+<!-- ━━━ HERO ━━━ -->
+<section id="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      ⭐ 4.9/5 Google · #78 TripAdvisor Leuven
+    </div>
+    <h1 class="hero-title">Falafel Top</h1>
+    <p class="hero-sub" data-lang="hero_sub">Authentieke Syrische falafel, gemaakt met liefde</p>
+    <div class="hero-icons">
+      <span>🌱 <span data-lang="hero_vegan">100% Vegan</span></span>
+      <span>🧆 <span data-lang="hero_fresh">Vers gebakken</span></span>
+      <span>🎁 <span data-lang="hero_free">Gratis falafel</span></span>
+    </div>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-primary" data-lang="hero_cta1">Bekijk ons menu</a>
+      <a href="https://www.falafeltopleuven.be" target="_blank" rel="noopener" class="btn-outline" data-lang="hero_cta2">Bestel online</a>
+    </div>
+    <div class="hero-open">
+      <div class="pulse-dot"></div>
+      <span data-lang="hero_open">Vandaag open · 11:00 – 21:00</span>
+    </div>
+  </div>
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+      <rect x="1" y="1" width="14" height="22" rx="7" stroke="rgba(250,246,239,0.6)" stroke-width="1.2"/>
+      <circle cx="8" cy="7" r="2.5" fill="rgba(250,246,239,0.6)">
+        <animate attributeName="cy" values="7;15;7" dur="1.8s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;0.2;1" dur="1.8s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+  </div>
+</section>
+
+<!-- ━━━ SIGNATURE STRIP ━━━ -->
+<section id="strip">
+  <div class="strip-grid">
+    <div class="strip-card fade-up">
+      <div class="strip-icon">🧆</div>
+      <div class="strip-title" data-lang="strip1_title">Vers gebakken</div>
+      <div class="strip-body" data-lang="strip1_body">Elke falafel vers gebakken op bestelling</div>
+    </div>
+    <div class="strip-card fade-up" style="transition-delay:0.1s">
+      <div class="strip-icon">🎁</div>
+      <div class="strip-title" data-lang="strip2_title">Gratis falafel</div>
+      <div class="strip-body" data-lang="strip2_body">Gratis falafel proeven terwijl je wacht</div>
+    </div>
+    <div class="strip-card fade-up" style="transition-delay:0.2s">
+      <div class="strip-icon">🍵</div>
+      <div class="strip-title" data-lang="strip3_title">Gratis muntthee</div>
+      <div class="strip-body" data-lang="strip3_body">Verse muntthee aangeboden door de eigenaar</div>
+    </div>
+    <div class="strip-card fade-up" style="transition-delay:0.3s">
+      <div class="strip-icon">🌱</div>
+      <div class="strip-title" data-lang="strip4_title">100% Plantaardig</div>
+      <div class="strip-body" data-lang="strip4_body">Volledig vegan & vegetarisch menu</div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ MENU ━━━ -->
+<section id="menu">
+  <div class="menu-inner">
+    <div class="section-label menu-label fade-up">
+      <span class="section-label-text" data-lang="menu_label">Ons Menu</span>
+    </div>
+    <h2 class="section-title menu-title fade-up" data-lang="menu_title">Ons Menu</h2>
+    <div class="menu-cols">
+      <!-- Sandwiches -->
+      <div class="fade-up">
+        <div class="menu-col-title" data-lang="menu_sandwiches">Sandwiches</div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">🥙 Sandwich Falafel</div>
+            <div class="menu-price">€9.35</div>
+          </div>
+          <div class="menu-desc" data-lang="sand1_desc">Falafel, hummus, tomaat, komkommer, rucola, ui, sla, witte en rode kool</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">🥙 Sandwich Top <span class="bestseller-badge" data-lang="bestseller">Bestseller</span></div>
+            <div class="menu-price">€10</div>
+          </div>
+          <div class="menu-desc" data-lang="sand2_desc">Falafel, pastinaak, pompoen, baba ganoush, komkommer, witte kool, sla, rucola</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">🥙 Sandwich Extra</div>
+            <div class="menu-price">€10</div>
+          </div>
+          <div class="menu-desc" data-lang="sand3_desc">Falafel, hummus, bloemkool, komkommer, tomaat, rucola, sla</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">🥙 Sandwich Speciaal</div>
+            <div class="menu-price">€12</div>
+          </div>
+          <div class="menu-desc" data-lang="sand4_desc">Het complete pakket — alle groenten, hummus, baba ganoush</div>
+        </div>
+        <!-- Drinks -->
+        <div class="menu-col-title" style="margin-top:32px;" data-lang="menu_drinks">Dranken</div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">Cola</div>
+            <div class="menu-price">€2.50</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">Fanta</div>
+            <div class="menu-price">€2.30</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name" data-lang="drink_mango">Mango sap</div>
+            <div class="menu-price">€2.50</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name" data-lang="drink_ananas">Ananas sap</div>
+            <div class="menu-price">€2.50</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name" data-lang="drink_guava">Guava sap</div>
+            <div class="menu-price">€2.50</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name" data-lang="drink_water">Water</div>
+            <div class="menu-price">€2.30</div>
+          </div>
+        </div>
+      </div>
+      <!-- Plates -->
+      <div class="fade-up" style="transition-delay:0.15s">
+        <div class="menu-col-title" data-lang="menu_plates">Schotels</div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">🧆 <span data-lang="plate1_name">Falafel (1 stuk)</span></div>
+            <div class="menu-price">€1.20</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">🧆 <span data-lang="plate2_name">Falafel (5 stuks)</span></div>
+            <div class="menu-price">€6</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">🫙 Hummus <span data-lang="with_bread">met flat brood</span></div>
+            <div class="menu-price">€6</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">🍆 Baba Ganoush <span data-lang="with_bread">met flat brood</span></div>
+            <div class="menu-price">€6</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">🥗 <span data-lang="plate5_name">Slaatje naar keuze</span></div>
+            <div class="menu-price">€12</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-header">
+            <div class="menu-item-name">🍽️ <span data-lang="plate6_name">Schotel Falafel</span></div>
+            <div class="menu-price">€18.50</div>
+          </div>
+          <div class="menu-desc" data-lang="plate6_desc">Falafel, hummus, baba ganoush, flatbread, alle groenten</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-cta-wrap fade-up">
+      <a href="https://www.falafeltopleuven.be" target="_blank" rel="noopener" class="btn-outline" data-lang="menu_order">Bestel online →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ ABOUT ━━━ -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-img fade-up">
+      <img src="images/falafel-2.png" alt="Falafel Top — Over ons" />
+    </div>
+    <div class="fade-up" style="transition-delay:0.15s">
+      <div class="section-label about-label">
+        <span class="section-label-text" data-lang="about_label">Over Ons</span>
+      </div>
+      <h2 class="section-title about-title" data-lang="about_title">Gemaakt met liefde. Elke dag.</h2>
+      <p class="about-italic" data-lang="about_italic">De beste falafel buiten het Midden-Oosten.</p>
+      <p class="about-body" data-lang="about_body">Falafel Top is meer dan een restaurant — het is een plek waar iedereen welkom is. De eigenaar begroet elke gast met een gratis falafel en verse muntthee. Alles vers bereid van de beste ingrediënten. Authentieke Syrische tradities, midden in Leuven.</p>
+      <div class="about-stats">
+        <div class="about-stat">
+          <span class="about-stat-val">4.9★</span>
+          <span class="about-stat-label">Google</span>
+        </div>
+        <div class="about-stat">
+          <span class="about-stat-val" data-lang="stat2">100%</span>
+          <span class="about-stat-label" data-lang="stat2_label">Plantaardig</span>
+        </div>
+        <div class="about-stat">
+          <span class="about-stat-val">#78</span>
+          <span class="about-stat-label" data-lang="stat3_label">TripAdvisor Leuven</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ GALLERY ━━━ -->
+<section id="gallery">
+  <div class="gallery-inner">
+    <div class="section-label gallery-label fade-up">
+      <span class="section-label-text" data-lang="gallery_label">Onze Gerechten</span>
+    </div>
+    <h2 class="section-title gallery-title fade-up" data-lang="gallery_title">Onze Gerechten</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item fade-up">
+        <img src="images/falafel-3.png" alt="Falafel Top" />
+      </div>
+      <div class="gallery-item fade-up" style="transition-delay:0.1s">
+        <img src="images/falafel-4.png" alt="Falafel Top" />
+      </div>
+      <div class="gallery-item fade-up" style="transition-delay:0.2s">
+        <img src="images/falafel-5.png" alt="Falafel Top" />
+      </div>
+      <div class="gallery-item fade-up" style="transition-delay:0.3s">
+        <img src="images/falafel-6.png" alt="Falafel Top" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ CATERING ━━━ -->
+<section id="catering">
+  <div class="catering-inner fade-up">
+    <div class="section-label catering-label">
+      <span class="section-label-text" data-lang="catering_label">Catering</span>
+    </div>
+    <h2 class="section-title catering-title" data-lang="catering_title">Catering op maat</h2>
+    <p class="catering-body" data-lang="catering_body">Falafel Top verzorgt ook catering voor events, feesten en bedrijfsbijeenkomsten. Verse, authentieke Syrische gerechten voor elke gelegenheid.</p>
+    <a href="#contact" class="btn-white" data-lang="catering_cta">Neem contact op</a>
+  </div>
+</section>
+
+<!-- ━━━ REVIEWS ━━━ -->
+<section id="reviews">
+  <div class="reviews-inner">
+    <div class="section-label reviews-label fade-up">
+      <span class="section-label-text" data-lang="reviews_label">Reviews</span>
+    </div>
+    <h2 class="section-title reviews-title fade-up" data-lang="reviews_title">Wat onze gasten zeggen</h2>
+    <div class="reviews-grid">
+      <div class="review-card fade-up">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Best falafel I have eaten outside of the Middle East. Incredibly friendly owners, free falafel samples and tea. Wraps are massive and delicious."</p>
+        <div class="review-source">TripAdvisor</div>
+      </div>
+      <div class="review-card fade-up" style="transition-delay:0.1s">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"This place was built out of love and you can taste it. The owner gave us free falafel before we even ordered. Will absolutely come back."</p>
+        <div class="review-source">Google</div>
+      </div>
+      <div class="review-card fade-up" style="transition-delay:0.2s">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Amazing huge falafel wraps! Fluffy falafel. Lovely owners. 100% plant based — decades of success!"</p>
+        <div class="review-source">Google</div>
+      </div>
+    </div>
+    <div class="reviews-links fade-up">
+      <a href="https://www.tripadvisor.com/Restaurant_Review-g188669-Leuven_Flemish_Brabant_Province.html" target="_blank" rel="noopener" class="reviews-link">
+        <i class="fa-solid fa-star"></i> TripAdvisor
+      </a>
+      <a href="https://www.google.com/maps/search/Falafel+Top+Leuven" target="_blank" rel="noopener" class="reviews-link">
+        <i class="fa-solid fa-location-dot"></i> Google Maps
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ CONTACT ━━━ -->
+<section id="contact">
+  <div class="contact-inner">
+    <!-- Left -->
+    <div class="fade-up">
+      <div class="section-label contact-label">
+        <span class="section-label-text" data-lang="contact_label">Contact</span>
+      </div>
+      <h2 class="section-title contact-title" data-lang="contact_title">Bezoek ons</h2>
+      <div class="contact-info">
+        <div class="contact-row">
+          <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div class="contact-val">Diestsestraat 159, 3000 Leuven</div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+          <div class="contact-val"><a href="tel:+3246597896">+32 465 97 89 64</a></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+          <div class="contact-val"><a href="mailto:fadiskaf12@gmail.com">fadiskaf12@gmail.com</a></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon"><i class="fa-regular fa-clock"></i></div>
+          <div class="contact-val" data-lang="contact_hours">Elke dag: 11:00 – 21:00</div>
+        </div>
+      </div>
+      <div class="contact-tagline" data-lang="contact_tagline">100% Vegan · Catering · Buiten zitten</div>
+      <div class="map-wrap">
+        <iframe
+          src="https://www.google.com/maps?q=Diestsestraat+159,+3000+Leuven&output=embed"
+          width="100%" height="320"
+          style="border:0;border-radius:12px;"
+          allowfullscreen loading="lazy"
+          title="Falafel Top Leuven"></iframe>
+      </div>
+    </div>
+    <!-- Right: Form -->
+    <div class="fade-up" style="transition-delay:0.15s">
+      <div class="form-title" data-lang="form_title">Stuur een bericht</div>
+      <form id="contact-form" onsubmit="submitForm(event)">
+        <div class="form-group">
+          <label class="form-label" data-lang="form_name">Naam</label>
+          <input class="form-input" type="text" required placeholder="" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" required placeholder="" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-lang="form_message">Bericht</label>
+          <textarea class="form-textarea" required placeholder=""></textarea>
+        </div>
+        <button type="submit" class="form-submit" data-lang="form_submit">Verstuur →</button>
+      </form>
+      <div class="form-success" id="form-success" data-lang="form_success">Bedankt! We antwoorden zo snel mogelijk.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ FOOTER ━━━ -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="images/logo.png" alt="Falafel Top" style="max-height:40px;object-fit:contain;">
+      <div class="footer-brand-text" data-lang="footer_tagline">Authentieke Syrische falafel · Leuven</div>
+    </div>
+    <div class="footer-copy">© 2026 · Diestsestraat 159 · 3000 Leuven</div>
+    <div class="footer-links">
+      <a href="https://www.facebook.com/p/Falafel-Top-100065096877255" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i> Facebook</a>
+      <a href="https://www.falafeltopleuven.be" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> falafeltopleuven.be</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── TRANSLATIONS ─────────────────────────────────────────── */
+const TRANSLATIONS = {
+  nl: {
+    nav_menu: 'Menu',
+    nav_about: 'Over ons',
+    nav_catering: 'Catering',
+    nav_contact: 'Contact',
+    nav_cta: 'Bestel nu',
+    hero_sub: 'Authentieke Syrische falafel, gemaakt met liefde',
+    hero_vegan: '100% Vegan',
+    hero_fresh: 'Vers gebakken',
+    hero_free: 'Gratis falafel',
+    hero_cta1: 'Bekijk ons menu',
+    hero_cta2: 'Bestel online',
+    hero_open: 'Vandaag open · 11:00 – 21:00',
+    strip1_title: 'Vers gebakken',
+    strip1_body: 'Elke falafel vers gebakken op bestelling',
+    strip2_title: 'Gratis falafel',
+    strip2_body: 'Gratis falafel proeven terwijl je wacht',
+    strip3_title: 'Gratis muntthee',
+    strip3_body: 'Verse muntthee aangeboden door de eigenaar',
+    strip4_title: '100% Plantaardig',
+    strip4_body: 'Volledig vegan & vegetarisch menu',
+    menu_label: 'Ons Menu',
+    menu_title: 'Ons Menu',
+    menu_sandwiches: 'Sandwiches',
+    menu_plates: 'Schotels',
+    menu_drinks: 'Dranken',
+    menu_order: 'Bestel online →',
+    bestseller: 'Bestseller',
+    sand1_desc: 'Falafel, hummus, tomaat, komkommer, rucola, ui, sla, witte en rode kool',
+    sand2_desc: 'Falafel, pastinaak, pompoen, baba ganoush, komkommer, witte kool, sla, rucola',
+    sand3_desc: 'Falafel, hummus, bloemkool, komkommer, tomaat, rucola, sla',
+    sand4_desc: 'Het complete pakket — alle groenten, hummus, baba ganoush',
+    plate1_name: 'Falafel (1 stuk)',
+    plate2_name: 'Falafel (5 stuks)',
+    with_bread: 'met flat brood',
+    plate5_name: 'Slaatje naar keuze',
+    plate6_name: 'Schotel Falafel',
+    plate6_desc: 'Falafel, hummus, baba ganoush, flatbread, alle groenten',
+    drink_mango: 'Mango sap',
+    drink_ananas: 'Ananas sap',
+    drink_guava: 'Guava sap',
+    drink_water: 'Water',
+    about_label: 'Over Ons',
+    about_title: 'Gemaakt met liefde. Elke dag.',
+    about_italic: 'De beste falafel buiten het Midden-Oosten.',
+    about_body: 'Falafel Top is meer dan een restaurant — het is een plek waar iedereen welkom is. De eigenaar begroet elke gast met een gratis falafel en verse muntthee. Alles vers bereid van de beste ingrediënten. Authentieke Syrische tradities, midden in Leuven.',
+    stat2: '100%',
+    stat2_label: 'Plantaardig',
+    stat3_label: 'TripAdvisor Leuven',
+    gallery_label: 'Onze Gerechten',
+    gallery_title: 'Onze Gerechten',
+    catering_label: 'Catering',
+    catering_title: 'Catering op maat',
+    catering_body: 'Falafel Top verzorgt ook catering voor events, feesten en bedrijfsbijeenkomsten. Verse, authentieke Syrische gerechten voor elke gelegenheid.',
+    catering_cta: 'Neem contact op',
+    reviews_label: 'Reviews',
+    reviews_title: 'Wat onze gasten zeggen',
+    contact_label: 'Contact',
+    contact_title: 'Bezoek ons',
+    contact_hours: 'Elke dag: 11:00 – 21:00',
+    contact_tagline: '100% Vegan · Catering · Buiten zitten',
+    form_title: 'Stuur een bericht',
+    form_name: 'Naam',
+    form_message: 'Bericht',
+    form_submit: 'Verstuur →',
+    form_success: 'Bedankt! We antwoorden zo snel mogelijk.',
+    footer_tagline: 'Authentieke Syrische falafel · Leuven',
+  },
+  en: {
+    nav_menu: 'Menu',
+    nav_about: 'About',
+    nav_catering: 'Catering',
+    nav_contact: 'Contact',
+    nav_cta: 'Order now',
+    hero_sub: 'Authentic Syrian falafel, made with love',
+    hero_vegan: '100% Vegan',
+    hero_fresh: 'Freshly fried',
+    hero_free: 'Free falafel',
+    hero_cta1: 'View our menu',
+    hero_cta2: 'Order online',
+    hero_open: 'Open today · 11:00 – 21:00',
+    strip1_title: 'Freshly fried',
+    strip1_body: 'Every falafel freshly fried to order',
+    strip2_title: 'Free falafel',
+    strip2_body: 'Free falafel sample while you wait',
+    strip3_title: 'Free mint tea',
+    strip3_body: 'Fresh mint tea offered by the owner',
+    strip4_title: '100% Plant-based',
+    strip4_body: 'Fully vegan & vegetarian menu',
+    menu_label: 'Our Menu',
+    menu_title: 'Our Menu',
+    menu_sandwiches: 'Sandwiches',
+    menu_plates: 'Plates',
+    menu_drinks: 'Drinks',
+    menu_order: 'Order online →',
+    bestseller: 'Bestseller',
+    sand1_desc: 'Falafel, hummus, tomato, cucumber, rocket, onion, lettuce, white and red cabbage',
+    sand2_desc: 'Falafel, parsnip, pumpkin, baba ganoush, cucumber, white cabbage, lettuce, rocket',
+    sand3_desc: 'Falafel, hummus, cauliflower, cucumber, tomato, rocket, lettuce',
+    sand4_desc: 'The complete package — all vegetables, hummus, baba ganoush',
+    plate1_name: 'Falafel (1 piece)',
+    plate2_name: 'Falafel (5 pieces)',
+    with_bread: 'with flatbread',
+    plate5_name: 'Salad of choice',
+    plate6_name: 'Falafel Plate',
+    plate6_desc: 'Falafel, hummus, baba ganoush, flatbread, all vegetables',
+    drink_mango: 'Mango juice',
+    drink_ananas: 'Pineapple juice',
+    drink_guava: 'Guava juice',
+    drink_water: 'Water',
+    about_label: 'About Us',
+    about_title: 'Made with love. Every day.',
+    about_italic: 'The best falafel outside the Middle East.',
+    about_body: "Falafel Top is more than a restaurant — it's a place where everyone is welcome. The owner greets every guest with a free falafel and fresh mint tea. Everything freshly prepared from the finest ingredients. Authentic Syrian traditions, right in the heart of Leuven.",
+    stat2: '100%',
+    stat2_label: 'Plant-based',
+    stat3_label: 'TripAdvisor Leuven',
+    gallery_label: 'Our Food',
+    gallery_title: 'Our Food',
+    catering_label: 'Catering',
+    catering_title: 'Custom catering',
+    catering_body: 'Falafel Top also provides catering for events, parties and corporate gatherings. Fresh, authentic Syrian dishes for every occasion.',
+    catering_cta: 'Get in touch',
+    reviews_label: 'Reviews',
+    reviews_title: 'What our guests say',
+    contact_label: 'Contact',
+    contact_title: 'Visit us',
+    contact_hours: 'Every day: 11:00 – 21:00',
+    contact_tagline: '100% Vegan · Catering · Outdoor seating',
+    form_title: 'Send a message',
+    form_name: 'Name',
+    form_message: 'Message',
+    form_submit: 'Send →',
+    form_success: "Thanks! We'll get back to you soon.",
+    footer_tagline: 'Authentic Syrian falafel · Leuven',
+  }
+};
+
+let currentLang = localStorage.getItem('ft-lang') || 'nl';
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('ft-lang', lang);
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    const key = el.getAttribute('data-lang');
+    if (TRANSLATIONS[lang][key] !== undefined) {
+      el.textContent = TRANSLATIONS[lang][key];
+    }
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+  });
+}
+
+/* ─── NAVBAR SCROLL ─────────────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ─── HAMBURGER ─────────────────────────────────────────────── */
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+function closeMobile() {
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+
+/* ─── CONTACT FORM ──────────────────────────────────────────── */
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('contact-form').style.display = 'none';
+  const s = document.getElementById('form-success');
+  s.style.display = 'block';
+  s.textContent = TRANSLATIONS[currentLang].form_success;
+}
+
+/* ─── SCROLL ANIMATIONS ─────────────────────────────────────── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+/* ─── INIT ──────────────────────────────────────────────────── */
+setLang(currentLang);
+</script>
+</body>
+</html>
